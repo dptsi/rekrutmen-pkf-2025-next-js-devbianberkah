@@ -6,6 +6,7 @@ import { Layout } from '@/components/templates/Layout';
 import { useEffect } from 'react';
 import { initCypressEvents } from '@/utils/testHelpers';
 
+
 export default function App({ Component, pageProps }: AppProps) {
   // Initialize Cypress testing events
   useEffect(() => {
@@ -14,7 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
   
   return (
     <ChakraProvider>
-      <Layout>
+      <Layout>       
         <Component {...pageProps} />
       </Layout>
     </ChakraProvider>
