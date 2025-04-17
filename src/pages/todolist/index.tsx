@@ -1,4 +1,4 @@
-import { Container, Heading,Input,Text,Box, Stack, Button, FormControl,FormErrorMessage } from '@chakra-ui/react'
+import { Container, Heading,Input,Text,Box, Stack,Select, Button, FormControl,FormErrorMessage } from '@chakra-ui/react'
 import React,{useState,useEffect} from 'react'
 import { v4 as uuidv4 } from 'uuid';
 import { Todo } from '@/services/api';
@@ -24,6 +24,7 @@ const [todos, setTodos] = useState<Todo[]>([]);
 const [isFetching, setIsFetching] = useState(true);
 const [error, setError] = useState<string | null>(null);
 const [input,setInput] = useState('');
+const [status, setStatus] = useState<string>(''); // default value
 const [inputError,setInputError] = useState(true);
 const [inputLessCharError,setInputLessCharError] = useState(true);
 
@@ -40,14 +41,6 @@ useEffect(() => {
 
     getTodos();
   }, []);
-
-if (isFetching) {
-    return (
-      <Container>
-        Fetching Todo data...
-      </Container>
-    );
-  }
 
   if (error) {
     return (
@@ -80,6 +73,7 @@ if (isFetching) {
     setTodos((prevTodo)=>[...prevTodo,newTodo]);
     setInput('');
     setInputError(false);
+    setStatus('');
     setInputLessCharError(false);
  };
 
@@ -103,21 +97,38 @@ if (isFetching) {
                 {inputLessCharError && (<FormErrorMessage>Title minimal 3 karakter</FormErrorMessage>)}
             </FormControl>
             <Box>
-                <Button color={'teal'} onClick={addTodo}>
-                                    Add Todo
+                <Button background={'blue.300'} color={'white'} onClick={addTodo}>
+                        Add Todo
                 </Button>
-            </Box>          
+            </Box>         
             <Box>
-                    {todos && todos.map((item) => (
-                <Box key={item.id} mb={4} p={4} borderWidth="1px" borderRadius="md">
-                    <Text fontWeight="bold">{item.title}</Text>
-                </Box>
+                {isFetching && 
+                        <Container>
+                        Fetching To Do data...
+                    </Container>
+                }
+                <Stack>
+                    <Input placeholder='Search todos..'/>
+                    <Select value={status} onChange={(e) => setStatus(e.target.value)}>
+                        <option value="">All</option>
+                        <option value="pending">Pending</option>
+                        <option value="done">Done</option>
+                    </Select>
+                    <Select value={status} onChange={(e) => setStatus(e.target.value)}>
+                        <option value="">Newest</option>
+                        <option value="">Oldest</option>
+                        <option value="">Alphabetical</option>
+                    </Select>
+                </Stack>
+                <Box></Box>
+                {todos && todos.map((item) => (
+                    <Box key={item.id} mb={4} p={4} borderWidth="1px" borderRadius="md">
+                        <Text fontWeight="bold">{item.title}</Text>
+                    </Box>
                 ))}
             </Box>
          </Stack>
        </Container>
   )
 }
-
-
 export default Todolist

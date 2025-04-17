@@ -38,14 +38,6 @@ const ArticlePage = () => {
     getArticle();
   }, []);
 
-  if (isFetching) {
-    return (
-      <Container>
-        Fetching article data...
-      </Container>
-    );
-  }
-
   if (error) {
     return (
       <Container>
@@ -57,6 +49,11 @@ const ArticlePage = () => {
   return (
     <Container>
       <Heading mb={4}>Artikel</Heading>
+      {isFetching && 
+         <Container>
+         Fetching article data...
+       </Container>
+      }
       {articles && articles.map((article) => (
         <Box key={article.id} mb={4} p={4} borderWidth="1px" borderRadius="md">
           <Text fontWeight="bold">{article.title}</Text>
